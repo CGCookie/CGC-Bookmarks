@@ -115,7 +115,7 @@ function cgc_list_bookmarked_images($number = 999 ) {
 	
 	if(is_user_logged_in()) {
 
-		$display .= '<ul>';
+		$display .= '<ul class="bookmarked-images-list">';
 			$bookmarks = $wpdb->get_results("SELECT * FROM " . $cgcb_db_table . " WHERE (user_id='" . $user_ID . "' AND post_url LIKE '%images/%') LIMIT $number;");
 			$i = 1;
 			if($bookmarks) {
