@@ -105,8 +105,37 @@ function cgc_list_bookmarks( $delete_link = true, $number = 999 ) {
 	return $display;
 	
 }
+function cgc_get_bookmarked_image_author( $bookmark_url, $bookmark_title ) {
+	global $wpdb;
 
-function cgc_list_bookmarked_images($number = 999 ) {
+	if( empty( $bookmark_url ) || empty( $bookmark_title ) ) {
+		return;
+	} 
+
+	// Get the network slug
+	$find_bookmark_origin_network = explode('/files/', $bookmark_url);
+	$get_bookmark_network_origin = explode('/', $find_bookmark_origin_network[0]);
+	$bookmark_network_slug = '/'. $get_bookmark_network_origin[3] .'/';
+
+	// Get the network ID
+	$cgc_domain =  $_SERVER['SERVER_NAME'];
+	$blog_id = get_blog_id_from_url( $cgc_domain, $bookmark_network_slug );
+
+	// Find the post and its author
+	switch_to_blog( $blog_id );
+	$image_post = get_page_by_title( $bookmark_title, object, 'images' );
+	$author_id = $image_post->post_author;
+
+	// Display the author
+	$bookmark_author = get_the_author_meta( 'display_name', $author_id );
+	
+	restore_current_blog();
+
+	return $bookmark_author;
+
+}
+
+function cgc_list_bookmarked_images( $number = 999, $list_view = false ) {
 	global $user_ID;
 	global $wpdb;
 	global $cgcb_db_table;
@@ -114,19 +143,27 @@ function cgc_list_bookmarked_images($number = 999 ) {
 	$display = '';
 	
 	if(is_user_logged_in()) {
-
-		$display .= '<ul class="bookmarked-images-list">';
+		$format = 'grid-view';
+		if ( $list_view ) {
+			$format = 'list-view';
+		}
+		$display .= '<ul class="bookmarked-images-list '. $format .'">';
 			$bookmarks = $wpdb->get_results("SELECT * FROM " . $cgcb_db_table . " WHERE (user_id='" . $user_ID . "' AND post_url LIKE '%images/%') LIMIT $number;");
-			$i = 1;
 			if($bookmarks) {
 				foreach( $bookmarks as $bookmark) {
-					$last = '';
+
 					$image = $bookmark->image_url != '' ? $bookmark->image_url : get_bloginfo("stylesheet_directory") . '/images/image_missing.jpg';
-					if($i % 3 == 0) { $last = ' last'; }
-					$display .= '<li class="bookmark-link bookmarked-image bookmark_' . $bookmark->id . $last . '">';
-						$display .= '<a href="' . $bookmark->post_url . '" title="' . stripslashes($bookmark->post_title) . '"><img src="' . $image . '" width="118" height="80" class="image_bookmark"/></a>';
+					$display .= '<li class="bookmark-link bookmarked-image bookmark_' . $bookmark->id . '">';
+						$display .= '<a href="' . $bookmark->post_url . '" title="' . stripslashes($bookmark->post_title) . '" class="favorited-image"><img src="' . $image . '" width="118" height="80" class="image_bookmark"/></a>';
+						if ( $list_view ) {	
+							$bookmark_url = $bookmark->image_url;
+							$bookmark_title = $bookmark->post_title;
+							$display .= '<div class="favorited-image-info">';
+								$display .= '<a title="'. $bookmark_title .'" href="'. $bookmark_url .'"><span class="favorite-image-title">'. stripslashes($bookmark->post_title) . '</span></a> by '. cgc_get_bookmarked_image_author( $bookmark_url, $bookmark_title );
+							$display .= '</div>';
+						}
+
 					$display .= '</li>';
-					$i++;
 				}
 			} else {
 				$display .= '<li>You do not have any favorited images.</li>';
