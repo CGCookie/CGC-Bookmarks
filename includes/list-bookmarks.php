@@ -61,7 +61,7 @@ function cgc_list_bookmarks( $delete_link = true, $number = 999 ) {
 					$image = $bookmark->image_url != '' ? $bookmark->image_url : get_bloginfo("stylesheet_directory") . '/images/image_missing.jpg';
 					if($i % 3 == 0) { $last = ' last'; }
 					$display .= '<li class="bookmark-link bookmarked-image bookmark_' . $bookmark->id . $last . '">';
-						$display .= '<a href="' . $bookmark->post_url . '"><img src="' . $image . '" width="118" height="80" class="image_bookmark"/></a>';
+						$display .= '<a href="' . $bookmark->post_url . '"><img src="' . $image . '" class="image_bookmark"/></a>';
 					$display .= '</li>';
 					$i++;
 				}
@@ -85,7 +85,7 @@ function cgc_list_bookmarks( $delete_link = true, $number = 999 ) {
 					$image = $bookmark->image_url != '' ? $bookmark->image_url : get_bloginfo("stylesheet_directory") . '/images/oldImage_message.jpg';
 
 					$display .= '<li class="bookmark-link bookmark_' . $bookmark->id . '">';
-						$display .= '<a href="' . $bookmark->post_url . '"><em class="' . $blog . '"></em><img src="' . $image . '" width="118" height="80" class="image_bookmark"/>' . stripslashes($bookmark->post_title) . '</a>';
+						$display .= '<a href="' . $bookmark->post_url . '"><em class="' . $blog . '"></em><img src="' . $image . '" class="image_bookmark"/>' . stripslashes($bookmark->post_title) . '</a>';
 						if($delete_link == true ) {
 							$display .= '<span class="cgc_bookmark_delete"> - <a id="remove_bookmark_' . $bookmark->id . '" class="' . $bookmark->user_id . '" href="' .$bookmark->post_url . '">remove</a></span>';
 						}
@@ -148,13 +148,13 @@ function cgc_list_bookmarked_images( $number = 999, $list_view = false ) {
 			$format = 'list-view';
 		}
 		$display .= '<ul class="bookmarked-images-list '. $format .'">';
-			$bookmarks = $wpdb->get_results("SELECT * FROM " . $cgcb_db_table . " WHERE (user_id='" . $user_ID . "' AND post_url LIKE '%images/%') LIMIT $number;");
+			$bookmarks = $wpdb->get_results("SELECT * FROM " . $cgcb_db_table . " WHERE (user_id='" . $user_ID . "' AND post_url LIKE '%images/%') ORDER BY id DESC LIMIT $number;");
 			if($bookmarks) {
 				foreach( $bookmarks as $bookmark) {
 
 					$image = $bookmark->image_url != '' ? $bookmark->image_url : get_bloginfo("stylesheet_directory") . '/images/image_missing.jpg';
 					$display .= '<li class="bookmark-link bookmarked-image bookmark_' . $bookmark->id . '">';
-						$display .= '<a href="' . $bookmark->post_url . '" title="' . stripslashes($bookmark->post_title) . '" class="favorited-image"><img src="' . $image . '" width="118" height="80" class="image_bookmark"/></a>';
+						$display .= '<a href="' . $bookmark->post_url . '" title="' . stripslashes($bookmark->post_title) . '" class="favorited-image"><img src="' . $image . '" class="image_bookmark"/></a>';
 						if ( $list_view ) {	
 							$bookmark_url = $bookmark->image_url;
 							$bookmark_title = $bookmark->post_title;
@@ -188,20 +188,22 @@ function cgc_list_bookmarked_posts($number = 999 ) {
 	
 	if(is_user_logged_in()) {
 		
-		$display .= '<ul>';
-			$bookmarks = $wpdb->get_results("SELECT * FROM " . $cgcb_db_table . " WHERE (user_id='" . $user_ID . "' AND post_url NOT LIKE '%images/%') LIMIT $number;");
+		$display .= '<ul class="bookmarked-posts-list">';
+			$bookmarks = $wpdb->get_results("SELECT * FROM " . $cgcb_db_table . " WHERE (user_id='" . $user_ID . "' AND post_url NOT LIKE '%images/%') ORDER BY id DESC LIMIT $number;");
 			if($bookmarks) {
 				foreach( $bookmarks as $bookmark) {
-					$blog = strrchr($bookmark->post_url, '.com');
-					$blog = substr($blog, 5);
-					$blog = cgcb_rstrstr($blog, '/');
+					// Get the network slug
+					$blog = explode('/files/', $bookmark->post_url);
+					$blog = explode('/', $blog[0]);
+					$blog = $blog[3];
+
 					if(strlen($bookmark->post_title) > 40) {
 						$title = substr($bookmark->post_title, 0, 40) . '...';	
 					} else {
 						$title = $bookmark->post_title;	
 					}
-					$display .= '<li class="bookmark-link bookmark_' . $bookmark->id . '">';
-						$display .= '<a href="' . $bookmark->post_url . '"><em class="' . $blog . '"></em>Tutorial - ' . stripslashes($title) . '</a>';
+					$display .= '<li class="bookmark-link bookmark_' . $bookmark->id . ' '. $blog . '"">';
+						$display .= '<a href="' . $bookmark->post_url . '"><span>' . stripslashes($title) . '</span></a>';
 					$display .= '</li>';
 			
 				}
