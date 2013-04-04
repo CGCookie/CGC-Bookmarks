@@ -66,7 +66,7 @@ function cgc_list_bookmarks( $delete_link = true, $number = 999 ) {
 					$i++;
 				}
 			} else {
-				$display .= '<li>You do not have any favorited images.</li>';
+				$display .= '<li class="empty">You do not have any favorited images.</li>';
 			}
 		$display .= '</ul></div>';
 
