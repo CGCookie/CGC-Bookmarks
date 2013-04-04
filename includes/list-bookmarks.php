@@ -151,7 +151,6 @@ function cgc_list_bookmarked_images( $number = 999, $list_view = false ) {
 			$bookmarks = $wpdb->get_results("SELECT * FROM " . $cgcb_db_table . " WHERE (user_id='" . $user_ID . "' AND post_url LIKE '%images/%') ORDER BY id DESC LIMIT $number;");
 			if($bookmarks) {
 				foreach( $bookmarks as $bookmark) {
-
 					$image = $bookmark->image_url != '' ? $bookmark->image_url : get_bloginfo("stylesheet_directory") . '/images/image_missing.jpg';
 					$display .= '<li class="bookmark-link bookmarked-image bookmark_' . $bookmark->id . '">';
 						$display .= '<a href="' . $bookmark->post_url . '" title="' . stripslashes($bookmark->post_title) . '" class="favorited-image"><img src="' . $image . '" class="image_bookmark"/></a>';
@@ -179,7 +178,7 @@ function cgc_list_bookmarked_images( $number = 999, $list_view = false ) {
 
 }
 
-function cgc_list_bookmarked_posts($number = 999 ) {
+function cgc_list_bookmarked_posts($number = 999, $truncate_title = false ) {
 	global $user_ID;
 	global $wpdb;
 	global $cgcb_db_table;
@@ -197,12 +196,16 @@ function cgc_list_bookmarked_posts($number = 999 ) {
 					$blog = explode('/', $blog[0]);
 					$blog = $blog[3];
 
-					if(strlen($bookmark->post_title) > 40) {
-						$title = substr($bookmark->post_title, 0, 40) . '...';
+					if ( $truncate_title ) {
+						if(strlen($bookmark->post_title) > 40) {
+							$title = substr($bookmark->post_title, 0, 40) . '...';
+						} else {
+							$title = $bookmark->post_title;
+						}
 					} else {
 						$title = $bookmark->post_title;
 					}
-					$display .= '<li class="bookmark-link bookmark_' . $bookmark->id . ' '. $blog . '"">';
+					$display .= '<li class="bookmarked-post bookmark_' . $bookmark->id . ' '. $blog . '"">';
 						$display .= '<a href="' . $bookmark->post_url . '"><span>' . stripslashes($title) . '</span></a>';
 					$display .= '</li>';
 
