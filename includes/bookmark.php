@@ -3,7 +3,7 @@
 this file contains all of the functions used to add and delete bookmarks
 ************************************************************************/
 
-function cgc_add_remove_bookmark($links = array('add' => 'Favorite', 'remove' => 'Remove Favorite')) {
+function cgc_add_remove_bookmark($links = array('add' => '<i class="icon-bookmark icon-bookmark-empty"></i>', 'remove' => '<i class="icon-bookmark"></i>')) {
 	global $post;
 	global $wpdb;
 	global $user_ID;
@@ -18,11 +18,9 @@ function cgc_add_remove_bookmark($links = array('add' => 'Favorite', 'remove' =>
 	}
 	
 	if(!in_array($post->post_title, $user_bookmarks)) {
-		$link = '<a href="#" class="cgc_bookmark cgc_bookmark_add" title="' . $links['add'] . '" rel="nofollow" name="cgc_user_' . $user_ID . '">' . $links['add'] . '</a>';
-		$link .= '<a href="#" class="cgc_bookmark cgc_bookmark_remove" title="' . $links['remove'] . '" rel="nofollow" name="cgc_user_' . $user_ID . '" style="display: none;">' . $links['remove'] . '</a>';
+		$link = '<a href="#" class="cgc_bookmark cgc_bookmark_add" title="Add Bookmark" rel="nofollow" name="cgc_user_' . $user_ID . '">' . $links['add'] . '</a>';
 	} else {
-		$link = '<a href="#" class="cgc_bookmark cgc_bookmark_add" title="' . $links['add'] . '" rel="nofollow" name="cgc_user_' . $user_ID . '" style="display: none;">' . $links['add'] . '</a>';
-		$link .= '<a href="#" class="cgc_bookmark cgc_bookmark_remove" title="' . $links['remove'] . '" rel="nofollow" name="cgc_user_' . $user_ID . '">' . $links['remove'] . '</a>';
+		$link .= '<a href="#" class="cgc_bookmark cgc_bookmark_remove" title="Remove Bookmark" rel="nofollow" name="cgc_user_' . $user_ID . '">' . $links['remove'] . '</a>';
 	}
-	return $link;
+	return apply_filters('cgc_add_remove_bookmark', $link);
 }

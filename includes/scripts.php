@@ -13,7 +13,8 @@ function cgcb_header_scripts()
 			jQuery(function($){
 
 				// bookmark this post function
-				$('.cgc_bookmark_add').click(function(){
+				$('.post-controls').on('click', '.cgc_bookmark_add', function(){
+					$this = $(this);
 					var bookmark_url = '<?php echo get_permalink($post->ID); ?>';
 					var bookmark_title = '<?php echo addslashes($post->post_title); ?>';
 					var user_id = ''+$(this).attr('name').replace('cgc_user_', '');
@@ -21,45 +22,33 @@ function cgcb_header_scripts()
 
 					var info = 'bookmark_post=&cgcb_post_url=' + bookmark_url + '&cgcb_post_title=' + bookmark_title + '&cgcb_user_id=' + user_id + '&cgc_image_url=' + image_url;
 
-					$(this).css({ opacity: 0.5 });
+					var buttonIcon = $this.find('[class^="icon-"], [class*=" icon-"]');
 
-					$('#loading').ajaxStart(function() {
-					  $(this).show();
-
-					});
-					$('#loading').ajaxStop(function() {
-						$(this).fadeOut();
-
-					});
+					$this.css('opacity', .5);
 
 					$.ajax({
 						type: "POST",
 						url: "<?php echo $cgcbbaseDir;?>includes/process-ajax-data.php",
 						data: info,
 						success: function() {
-							$('.cgc_bookmark').toggle();
-							$('a.cgc_bookmark').css({ opacity: 100 });
+								$this.removeClass('cgc_bookmark_add').addClass('cgc_bookmark_remove').attr('title', 'Remove Bookmark').css('opacity', 1.0);	
+								buttonIcon.removeClass().addClass('icon-bookmark');
 						}
 					});
 
 					return false;
 				});
 				// remove bookmark function
-				$('.cgc_bookmark_remove').click(function(){
+				$('.post-controls').on('click', '.cgc_bookmark_remove', function(){
+					$this = $(this);
 
 					var bookmark_url = '<?php echo get_permalink($post->ID); ?>';
 					var bookmark_title = '<?php echo addslashes($post->post_title); ?>';
 					var user_id = ''+$(this).attr('name').replace('cgc_user_', '');
 
-					$(this).css({ opacity: 0.5 });
-
-					$('#loading').ajaxStart(function() {
-					  $(this).show();
-
-					});
-					$('#loading').ajaxStop(function() {
-						$(this).fadeOut();
-					});
+					var buttonIcon = $this.find('[class^="icon-"], [class*=" icon-"]');
+					
+					$this.css('opacity', .5);
 
 					var info = 'remove_bookmark=&cgcb_post_url=' + bookmark_url + '&cgcb_post_title=' + bookmark_title + '&cgcb_user_id=' + user_id;
 					$.ajax({
@@ -67,8 +56,8 @@ function cgcb_header_scripts()
 						url: "<?php echo $cgcbbaseDir;?>includes/process-ajax-data.php",
 						data: info,
 						success: function() {
-							$('.cgc_bookmark').toggle();
-							$('a.cgc_bookmark').css({ opacity: 100 });
+							$this.removeClass('cgc_bookmark_remove').addClass('cgc_bookmark_add').attr('title', 'Add Bookmark').css('opacity', 1.0);
+							buttonIcon.removeClass().addClass('icon-bookmark-empty');
 						}
 					});
 
