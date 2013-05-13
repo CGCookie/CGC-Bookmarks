@@ -20,7 +20,7 @@ function cgc_add_remove_bookmark($links = array('add' => '<i class="icon-bookmar
 	if(!in_array($post->post_title, $user_bookmarks)) {
 		$link = '<a href="#" class="cgc_bookmark cgc_bookmark_add" title="Add Bookmark" rel="nofollow" name="cgc_user_' . $user_ID . '">' . $links['add'] . '</a>';
 	} else {
-		$link .= '<a href="#" class="cgc_bookmark cgc_bookmark_remove" title="Remove Bookmark" rel="nofollow" name="cgc_user_' . $user_ID . '">' . $links['remove'] . '</a>';
+		$link = '<a href="#" class="cgc_bookmark cgc_bookmark_remove" title="Remove Bookmark" rel="nofollow" name="cgc_user_' . $user_ID . '">' . $links['remove'] . '</a>';
 	}
 	return apply_filters('cgc_add_remove_bookmark', $link);
 }
