@@ -23,7 +23,7 @@ function cgcb_header_scripts()
 					var info = 'bookmark_post=&cgcb_post_url=' + bookmark_url + '&cgcb_post_title=' + bookmark_title + '&cgcb_user_id=' + user_id + '&cgc_image_url=' + image_url;
 
 					var buttonIcon = $this.find('[class^="icon-"], [class*=" icon-"]');
-
+					var buttonClass = buttonIcon.attr('class');
 					$this.css('opacity', .5);
 
 					$.ajax({
@@ -31,8 +31,11 @@ function cgcb_header_scripts()
 						url: "<?php echo $cgcbbaseDir;?>includes/process-ajax-data.php",
 						data: info,
 						success: function() {
+								var newClass = buttonClass.replace('-empty','');
+								console.log(buttonClass);
+								console.log(newClass);
 								$this.removeClass('cgc_bookmark_add').addClass('cgc_bookmark_remove').attr('title', 'Remove Bookmark').css('opacity', 1.0);	
-								buttonIcon.removeClass().addClass('icon-bookmark');
+								buttonIcon.removeClass().addClass(newClass);
 						}
 					});
 
@@ -47,6 +50,7 @@ function cgcb_header_scripts()
 					var user_id = ''+$(this).attr('name').replace('cgc_user_', '');
 
 					var buttonIcon = $this.find('[class^="icon-"], [class*=" icon-"]');
+					var buttonClass = buttonIcon.attr('class');
 					
 					$this.css('opacity', .5);
 
@@ -56,8 +60,9 @@ function cgcb_header_scripts()
 						url: "<?php echo $cgcbbaseDir;?>includes/process-ajax-data.php",
 						data: info,
 						success: function() {
+							var newClass = buttonClass + '-empty';
 							$this.removeClass('cgc_bookmark_remove').addClass('cgc_bookmark_add').attr('title', 'Add Bookmark').css('opacity', 1.0);
-							buttonIcon.removeClass().addClass('icon-bookmark-empty');
+							buttonIcon.removeClass().addClass(newClass);
 						}
 					});
 

@@ -155,7 +155,7 @@ function cgc_list_bookmarked_images( $number = 999, $list_view = false ) {
 					$display .= '<li class="bookmark-link bookmarked-image bookmark_' . $bookmark->id . '">';
 						$display .= '<a href="' . $bookmark->post_url . '" title="' . stripslashes($bookmark->post_title) . '" class="favorited-image"><img src="' . $image . '" class="image_bookmark"/></a>';
 						if ( $list_view ) {
-							$bookmark_url = $bookmark->image_url;
+							$bookmark_url = $bookmark->post_url;
 							$bookmark_title = $bookmark->post_title;
 							$display .= '<div class="favorited-image-info">';
 								$display .= '<a title="'. $bookmark_title .'" href="'. $bookmark_url .'"><span class="favorite-image-title">'. stripslashes($bookmark->post_title) . '</span></a> by '. cgc_get_bookmarked_image_author( $bookmark_url, $bookmark_title );

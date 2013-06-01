@@ -3,7 +3,13 @@
 this file contains all of the functions used to add and delete bookmarks
 ************************************************************************/
 
-function cgc_add_remove_bookmark($links = array('add' => '<i class="icon-bookmark icon-bookmark-empty"></i>', 'remove' => '<i class="icon-bookmark"></i>')) {
+function cgc_add_remove_bookmark(
+	$links = array(
+		'add' => '<i class="icon-bookmark icon-bookmark-empty"></i>', 
+		'remove' => '<i class="icon-bookmark"></i>'
+	) ) {
+
+	
 	global $post;
 	global $wpdb;
 	global $user_ID;
