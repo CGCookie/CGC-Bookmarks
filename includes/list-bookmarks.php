@@ -124,6 +124,9 @@ function cgc_get_bookmarked_image_author( $bookmark_url, $bookmark_title ) {
 	// Find the post and its author
 	switch_to_blog( $blog_id );
 	$image_post = get_page_by_title( $bookmark_title, object, 'images' );
+	if( ! is_object( $image_post ) )
+		return '';
+
 	$author_id = $image_post->post_author;
 
 	// Display the author
