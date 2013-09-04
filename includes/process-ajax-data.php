@@ -31,6 +31,12 @@ if ( $post ) // if data is being sent
 		delete_transient( 'cgc_user_' . $user_ID . '_bookmarked_images_count' );
 		delete_transient( 'cgc_user_' . $user_ID . '_bookmarked_posts_count' );
 		restore_current_blog();
+
+		if( class_exists( 'CWS_Fragment_Cache' ) ) {
+			$frag = new CWS_Fragment_Cache( 'cgc-recent-bookmarks-' . $user_ID, 3600 );
+			$frag->flush();
+		}
+
 	}
 	// delete post type
 	if ( isset( $_POST['remove_bookmark'] ) ) {
@@ -41,5 +47,11 @@ if ( $post ) // if data is being sent
 		delete_transient( 'cgc_user_' . $user_ID . '_bookmarked_images_count' );
 		delete_transient( 'cgc_user_' . $user_ID . '_bookmarked_posts_count' );
 		restore_current_blog();
+
+		if( class_exists( 'CWS_Fragment_Cache' ) ) {
+			$frag = new CWS_Fragment_Cache( 'cgc-recent-bookmarks-' . $user_ID, 3600 );
+			$frag->flush();
+		}
+
 	}
 }
