@@ -34,7 +34,7 @@ function cgcb_header_scripts()
 								var newClass = buttonClass.replace('-empty','');
 								console.log(buttonClass);
 								console.log(newClass);
-								$this.removeClass('cgc_bookmark_add').addClass('cgc_bookmark_remove').attr('title', 'Remove Bookmark').css('opacity', 1.0);	
+								$this.removeClass('cgc_bookmark_add').addClass('cgc_bookmark_remove').attr('title', 'Remove Bookmark').css('opacity', 1.0);
 								buttonIcon.removeClass().addClass(newClass);
 						}
 					});
@@ -51,7 +51,7 @@ function cgcb_header_scripts()
 
 					var buttonIcon = $this.find('[class^="icon-"], [class*=" icon-"]');
 					var buttonClass = buttonIcon.attr('class');
-					
+
 					$this.css('opacity', .5);
 
 					var info = 'remove_bookmark=&cgcb_post_url=' + bookmark_url + '&cgcb_post_title=' + bookmark_title + '&cgcb_user_id=' + user_id;

@@ -5,7 +5,7 @@ function cgcb_rstrstr($haystack,$needle)
 }
 
 function cgc_bookmarked_images_count() {
-	
+
 	global $wpdb, $cgcb_db_table, $user_ID;
 	$images = get_transient('cgc_user_' . $user_ID . '_bookmarked_images_count');
 	if($images === false) {
@@ -15,14 +15,14 @@ function cgc_bookmarked_images_count() {
 	if($images) {
 		return count($images);
 	}
-	
+
 	return 0;
 }
 
 function cgc_bookmarked_posts_count() {
-	
+
 	global $wpdb, $cgcb_db_table, $user_ID;
-	
+
 	$bookmarks = get_transient('cgc_user_' . $user_ID . '_bookmarked_posts_count');
 	if($bookmarks === false) {
 		$bookmarks = $wpdb->get_results( "SELECT id FROM " . $cgcb_db_table . " WHERE (user_id='" . $user_ID . "' AND post_url NOT LIKE '%images/%');");
@@ -32,6 +32,6 @@ function cgc_bookmarked_posts_count() {
 	if($bookmarks) {
 		return count($bookmarks);
 	}
-	
+
 	return 0;
 }
