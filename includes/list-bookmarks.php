@@ -117,6 +117,8 @@ function cgc_get_bookmarked_image_author( $bookmark_url, $bookmark_title ) {
 	$get_bookmark_network_origin = explode('/', $find_bookmark_origin_network[0]);
 	$bookmark_network_slug = '/'. $get_bookmark_network_origin[3] .'/';
 
+	$bookmark_author = '';
+
 	// Get the network ID
 	$cgc_domain =  $_SERVER['SERVER_NAME'];
 	$blog_id = get_blog_id_from_url( $cgc_domain, $bookmark_network_slug );
@@ -124,14 +126,13 @@ function cgc_get_bookmarked_image_author( $bookmark_url, $bookmark_title ) {
 	// Find the post and its author
 	switch_to_blog( $blog_id );
 	$image_post = get_page_by_title( $bookmark_title, object, 'images' );
-	if( ! is_object( $image_post ) )
-		return '';
+	if(  is_object( $image_post ) ) {
+	
+		$author_id = $image_post->post_author;
 
-	$author_id = $image_post->post_author;
-
-	// Display the author
-	$bookmark_author = get_the_author_meta( 'display_name', $author_id );
-
+		// Display the author
+		$bookmark_author = get_the_author_meta( 'display_name', $author_id );
+	}
 	restore_current_blog();
 
 	return $bookmark_author;
