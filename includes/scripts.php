@@ -30,12 +30,16 @@ function cgcb_header_scripts()
 						type: "POST",
 						url: "<?php echo $cgcbbaseDir;?>includes/process-ajax-data.php",
 						data: info,
-						success: function() {
+						success: function( response ) {
+							if( response == '1' )
 								var newClass = buttonClass.replace('-empty','');
 								console.log(buttonClass);
 								console.log(newClass);
 								$this.removeClass('cgc_bookmark_add').addClass('cgc_bookmark_remove').attr('title', 'Remove Bookmark').css('opacity', 1.0);	
 								buttonIcon.removeClass().addClass(newClass);
+							} else {
+								alert( 'It seems the gremlins have gotten in the way again. Please try again and then contat support if the little buggers are still there.' );
+							}
 						}
 					});
 
@@ -60,10 +64,13 @@ function cgcb_header_scripts()
 						url: "<?php echo $cgcbbaseDir;?>includes/process-ajax-data.php",
 						data: info,
 						success: function(response) {
-alert( response );
-							var newClass = buttonClass + '-empty';
-							$this.removeClass('cgc_bookmark_remove').addClass('cgc_bookmark_add').attr('title', 'Add Bookmark').css('opacity', 1.0);
-							buttonIcon.removeClass().addClass(newClass);
+							if( response == '1' ) {
+								var newClass = buttonClass + '-empty';
+								$this.removeClass('cgc_bookmark_remove').addClass('cgc_bookmark_add').attr('title', 'Add Bookmark').css('opacity', 1.0);
+								buttonIcon.removeClass().addClass(newClass);
+							} else {
+								alert( 'It seems the gremlins have gotten in the way again. Please try again and then contat support if the little buggers are still there.' );
+							}
 						}
 					});
 
