@@ -20,7 +20,7 @@ function cgcb_header_scripts()
 					var user_id = ''+$(this).attr('name').replace('cgc_user_', '');
 					var image_url = '<?php echo $image_url[0]; ?>';
 
-					var info = 'bookmark_post=&cgcb_post_url=' + bookmark_url + '&cgcb_post_title=' + bookmark_title + '&cgcb_user_id=' + user_id + '&cgc_image_url=' + image_url;
+					var info = 'bookmark_post=1&cgcb_post_url=' + bookmark_url + '&cgcb_post_title=' + bookmark_title + '&cgcb_user_id=' + user_id + '&cgc_image_url=' + image_url;
 
 					var buttonIcon = $this.find('[class^="icon-"], [class*=" icon-"]');
 					var buttonClass = buttonIcon.attr('class');
@@ -54,12 +54,13 @@ function cgcb_header_scripts()
 					
 					$this.css('opacity', .5);
 
-					var info = 'remove_bookmark=&cgcb_post_url=' + bookmark_url + '&cgcb_post_title=' + bookmark_title + '&cgcb_user_id=' + user_id;
+					var info = 'remove_bookmark=1&cgcb_post_url=' + bookmark_url + '&cgcb_post_title=' + bookmark_title + '&cgcb_user_id=' + user_id;
 					$.ajax({
 						type: "POST",
 						url: "<?php echo $cgcbbaseDir;?>includes/process-ajax-data.php",
 						data: info,
-						success: function() {
+						success: function(response) {
+alert( response );
 							var newClass = buttonClass + '-empty';
 							$this.removeClass('cgc_bookmark_remove').addClass('cgc_bookmark_add').attr('title', 'Add Bookmark').css('opacity', 1.0);
 							buttonIcon.removeClass().addClass(newClass);
