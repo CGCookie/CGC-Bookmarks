@@ -6,6 +6,7 @@ include $newURL . DIRECTORY_SEPARATOR . 'wp-load.php';
 global $wpdb, $user_ID;
 $cgcb_db_table = "cgc_bookmarks";
 
+
 if ( $user_ID != absint( $_POST['cgcb_user_id'] ) ) {
 	die( 'Nice try buddy' );
 }
@@ -27,31 +28,46 @@ if ( $post ) // if data is being sent
 		);
 		delete_transient( 'cgc_user_' . $user_ID . '_bookmarked_images_count' );
 		delete_transient( 'cgc_user_' . $user_ID . '_bookmarked_posts_count' );
+		
 		switch_to_blog( 1 );
+		global $user_ID;
 		delete_transient( 'cgc_user_' . $user_ID . '_bookmarked_images_count' );
 		delete_transient( 'cgc_user_' . $user_ID . '_bookmarked_posts_count' );
 		restore_current_blog();
-
-		if( class_exists( 'CWS_Fragment_Cache' ) ) {
+		
+		if ( class_exists( 'CWS_Fragment_Cache' ) ) {
 			$frag = new CWS_Fragment_Cache( 'cgc-recent-bookmarks-' . $user_ID, 3600 );
 			$frag->flush();
 		}
-
+		if ( $add_bookmark )
+			die( '1' );
+		else
+			die( '0' );
 	}
 	// delete post type
 	if ( isset( $_POST['remove_bookmark'] ) ) {
-		$remove = $wpdb->query( $wpdb->prepare( "DELETE FROM " . $cgcb_db_table . " WHERE user_id='%d' AND post_url='%s';", absint( $_POST['cgcb_user_id'], sanitize_text_field( $_POST['cgcb_post_url'] ) ) ) );
+		$url = str_replace( network_home_url(), '', $_POST['cgcb_post_url'] );
+		$remove = $wpdb->query( $wpdb->prepare( "DELETE FROM " . $cgcb_db_table . " WHERE user_id='%d' AND post_url LIKE '%%s%%';", absint( $_POST['cgcb_user_id'] ), $url ) );
+		
 		delete_transient( 'cgc_user_' . $user_ID . '_bookmarked_images_count' );
 		delete_transient( 'cgc_user_' . $user_ID . '_bookmarked_posts_count' );
+		
 		switch_to_blog( 1 );
+		global $user_ID;
 		delete_transient( 'cgc_user_' . $user_ID . '_bookmarked_images_count' );
 		delete_transient( 'cgc_user_' . $user_ID . '_bookmarked_posts_count' );
 		restore_current_blog();
-
-		if( class_exists( 'CWS_Fragment_Cache' ) ) {
+		
+		if ( class_exists( 'CWS_Fragment_Cache' ) ) {
 			$frag = new CWS_Fragment_Cache( 'cgc-recent-bookmarks-' . $user_ID, 3600 );
 			$frag->flush();
 		}
+		if ( $remove )
+			echo '1';
+		else
+			echo '0';
+
+		exit;
 
 	}
 }
