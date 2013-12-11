@@ -42,7 +42,7 @@ if ( $post ) // if data is being sent
 	// delete post type
 	if ( isset( $_POST['remove_bookmark'] ) ) {
 		$url = str_replace( network_home_url(), '', $_POST['cgcb_post_url'] );
-		$remove = $wpdb->query( $wpdb->prepare( "DELETE FROM " . $cgcb_db_table . " WHERE user_id='%d' AND post_url LIKE '%s';", absint( $_POST['cgcb_user_id'] ), $url ) );
+		$remove = $wpdb->query( $wpdb->prepare( "DELETE FROM " . $cgcb_db_table . " WHERE user_id='%d' AND post_url LIKE '%%s%%';", absint( $_POST['cgcb_user_id'] ), $url ) );
 		
 		delete_transient( 'cgc_user_' . $user_ID . '_bookmarked_images_count' );
 		delete_transient( 'cgc_user_' . $user_ID . '_bookmarked_posts_count' );
