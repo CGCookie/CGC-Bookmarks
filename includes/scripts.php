@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 
 function cgcb_header_scripts()
@@ -85,3 +86,6 @@ function cgcb_header_scripts()
 	}
 }
 add_action('wp_head', 'cgcb_header_scripts');
+=======
+<?php
+>>>>>>> 98ac59ce7b14ede52810f34e3b71bb0e2551bf16
