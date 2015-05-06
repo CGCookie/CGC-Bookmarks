@@ -26,23 +26,15 @@ class cgcProcessBookmarking {
 
 			if ( $_POST['action'] == 'process_bookmark' && wp_verify_nonce( $_POST['nonce'], 'process_bookmark' )  ) {
 
-				// bail out if this user has already bookmarked this item
-				if ( cgc_has_user_bookmarked( $user_id, $post_id ) ) {
 
-					wp_send_json_success( array('message' => 'already-bookmarked') );
+				cgc_add_bookmark( $user_id, $post_id );
 
-				} else {
+				wp_send_json_success();
 
-					cgc_bookmark_something( $user_id, $post_id );
-
-					do_action('cgc_user_bookmarked', $user_id, $post_id );
-
-					wp_send_json_success( array( 'message'=> 'bookmarked' ) );
-				}
 
 			} elseif ( $_POST['action'] == 'process_unbookmark' && wp_verify_nonce( $_POST['nonce'], 'process_bookmark' ) ) {
 
-	    		// do unlovin
+	    		cgc_remove_bookmark( $user_id, $post_id );
 
 		        wp_send_json_success();
 

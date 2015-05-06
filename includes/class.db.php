@@ -57,6 +57,15 @@ class CGC_Bookmarks_DB {
 	*/
 	public function remove_bookmark( $args = array() ) {
 
+		global $wpdb;
+
+		if( empty( $args['user_id'] ) || empty( $args['post_id'] )  )
+			return;
+
+		do_action( 'cgc_bookmark_removed', $args );
+
+ 		$remove = $wpdb->query( $wpdb->prepare( "DELETE FROM {$this->table} WHERE `user_id` = '%d' AND `post_id` = '%d' ;", absint( $args['user_id'] ), absint( $args['post_id'] ) ) );
+
 	}
 
 	/**

@@ -7,7 +7,7 @@
 *	@param $post_id int id of the post the user is loving
 *	@since 5.0
 */
-function cgc_bookmark_something( $user_id = 0, $post_id = 0 ) {
+function cgc_add_bookmark( $user_id = 0, $post_id = 0 ) {
 
 	// if user is empty grab the current
 	if ( empty( $user_id ) )
@@ -24,6 +24,30 @@ function cgc_bookmark_something( $user_id = 0, $post_id = 0 ) {
 	// add the love
 	$db = new CGC_Bookmarks_DB;
 	$out =  $db->add_bookmark( array( 'user_id' => $user_id, 'post_id' => $post_id ) );
+}
+
+
+/**
+*	Remove a bookmark
+*
+*	@param $user_id int id of the users to delete the bookmark for
+*	@param $post_id int id of the bookmarked post
+*	@since 5.0
+*/
+function cgc_remove_bookmark( $user_id = 0, $post_id = 0 ){
+
+	if ( empty( $user_id ) || empty( $post_id ) )
+		return;
+
+	$db = new CGC_Bookmarks_DB;
+
+	$args = array(
+		'user_id' 	=> $user_id,
+		'post_id'	=> $post_id
+	);
+
+	$db->remove_bookmark( $args );
+
 }
 
 /**
