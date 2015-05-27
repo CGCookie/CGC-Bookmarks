@@ -26,8 +26,10 @@ class cgcProcessBookmarking {
 
 			if ( $_POST['action'] == 'process_bookmark' && wp_verify_nonce( $_POST['nonce'], 'process_bookmark' )  ) {
 
-
+				// add to bookmark table
 				cgc_add_bookmark( $user_id, $post_id );
+
+				do_action( 'bookmark_added', $user_id, $post_id );
 
 				wp_send_json_success();
 
@@ -35,6 +37,8 @@ class cgcProcessBookmarking {
 			} elseif ( $_POST['action'] == 'process_unbookmark' && wp_verify_nonce( $_POST['nonce'], 'process_bookmark' ) ) {
 
 	    		cgc_remove_bookmark( $user_id, $post_id );
+
+				do_action( 'bookmark_removed', $user_id, $post_id );
 
 		        wp_send_json_success();
 
