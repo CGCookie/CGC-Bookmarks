@@ -10,7 +10,7 @@
  * Plugin Name:       CGC Bookmarks
  * Plugin URI:        http://cgcookie.com
  * Description:       Creates a bookmarking system
- * Version:           2.0
+ * Version:           5.0
  * GitHub Plugin URI: https://github.com/cgcookie/cgc-bookmarks
  */
 
@@ -20,7 +20,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // Set some constants
-define('CGC_BOOKMARKS_VERSION', '2.0');
+define('CGC_BOOKMARKS_VERSION', '5.0');
 define('CGC_BOOKMARKS_DIR', plugin_dir_path( __FILE__ ));
 define('CGC_BOOKMARKS_URL', plugins_url( '', __FILE__ ));
 
